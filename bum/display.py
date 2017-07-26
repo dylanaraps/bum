@@ -19,4 +19,4 @@ def init():
 
 def launch(player, input_file):
     """Open mpv."""
-    player.play(input_file)
+    player.play(str(input_file))

@@ -33,6 +33,8 @@ def get_art(cache_dir):
         print("album: Found cached art.")
 
     else:
+        print("album: Downloading album art...")
+
         brainz.init()
         album_art = brainz.get_cover(song_data)
 

@@ -65,7 +65,7 @@ def main():
     song.get_art(args.cache_dir)
 
     while True:
-        display.launch(disp, "/home/dylan/.cache/bum/current.jpg")
+        display.launch(disp, args.cache_dir / "current.jpg")
         signal.pause()
 
 
