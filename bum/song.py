@@ -28,7 +28,7 @@ def get_art(cache_dir, size):
     """Get the album art."""
     song_data = get()
 
-    if "mpd error:" in song_data[0]:
+    if len(song_data) < 2:
         print("Nothing currently playing.")
         return
 
