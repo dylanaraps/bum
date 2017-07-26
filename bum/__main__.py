@@ -21,7 +21,7 @@ __version__ = "0.0.1"
 def get_args():
     """Get the script arguments."""
     description = "bum - Download and display album art \
-                   for mopidy-spotify tracks."
+                   for mpd tracks."
     arg = argparse.ArgumentParser(description=description)
 
     arg.add_argument("--size", metavar="\"px\"",

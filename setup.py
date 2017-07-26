@@ -24,7 +24,7 @@ setuptools.setup(
     version=VERSION,
     author="Dylan Araps",
     author_email="dylan.araps@gmail.com",
-    description="Download and display album art for mopidy-spotify tracks.",
+    description="Download and display album art for mpd tracks.",
     long_description=LONG_DESC,
     license="MIT",
     url="https://github.com/dylanaraps/bum",
@@ -39,6 +39,10 @@ setuptools.setup(
     entry_points={
         "console_scripts": ["bum=bum.__main__:main"]
     },
+    install_requires=[
+        "musicbrainzngs",
+        "python-mpv",
+    ],
     python_requires=">=3.6",
     test_suite="tests",
     include_package_data=True
