@@ -52,3 +52,16 @@ You can configure `ncmpcpp` to send `SIGUSR1` to `bum` on every song change.
 # Execute bum on song change.
 execute_on_song_change = "pkill -USR1 bum"
 ```
+
+### shell
+
+You can use `mpc idleloop` to send `SIGUSR1` to `bum` on every song change.
+
+
+```sh
+#!/bin/sh
+# Wake up bum on song change.
+while :; do
+    mpc idleloop player | pkill -USR1 bum$
+done
+```
