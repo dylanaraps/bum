@@ -15,6 +15,9 @@ from . import display
 from . import song
 
 
+__version__ = "0.0.1"
+
+
 def get_args():
     """Get the script arguments."""
     description = "bum - Download and display album art \
@@ -29,12 +32,23 @@ def get_args():
                      help="Where to store the downloaded cover art.",
                      default=pathlib.Path.home() / ".cache/bum")
 
+    arg.add_argument("--version", action="store_true",
+                     help="Print \"bum\" version.")
+
     return arg.parse_args()
+
+
+def process_args(args):
+    """Process the arguments."""
+    if args.version:
+        print(f"bum {__version__}")
+        exit(0)
 
 
 def main():
     """Main script function."""
     args = get_args()
+    process_args(args)
 
     def signal_usr1(sig, frame):
         """Handle 'pkill -USR1 bum'."""

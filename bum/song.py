@@ -10,7 +10,8 @@ from . import util
 
 def get():
     """Get the current playing song."""
-    song = subprocess.getoutput("mpc current -f '%artist%💩%title%💩%album%'")
+    song = subprocess.getoutput("mpc current -f \
+                                 '%albumartist%💩%title%💩%album%'")
 
     if song:
         return song.split("💩")

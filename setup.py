@@ -1,10 +1,10 @@
-"""wal - setup.py"""
+"""bum - setup.py"""
 import setuptools
 
 try:
-    import pywal
+    import bum
 except (ImportError, SyntaxError):
-    print("error: pywal requires Python 3.6 or greater.")
+    print("error: bum requires Python 3.6 or greater.")
     quit(1)
 
 
@@ -15,19 +15,19 @@ except(IOError, ImportError):
     LONG_DESC = open('README.md').read()
 
 
-VERSION = pywal.__version__
-DOWNLOAD = "https://github.com/dylanaraps/pywal/archive/%s.tar.gz" % VERSION
+VERSION = bum.__version__
+DOWNLOAD = "https://github.com/dylanaraps/bum/archive/%s.tar.gz" % VERSION
 
 
 setuptools.setup(
-    name="pywal",
+    name="bum",
     version=VERSION,
     author="Dylan Araps",
     author_email="dylan.araps@gmail.com",
-    description="Generate and change colorschemes on the fly",
+    description="Download and display album art for mopidy-spotify tracks.",
     long_description=LONG_DESC,
     license="MIT",
-    url="https://github.com/dylanaraps/pywal",
+    url="https://github.com/dylanaraps/bum",
     download_url=DOWNLOAD,
     classifiers=[
         "Environment :: X11 Applications",
@@ -35,9 +35,9 @@ setuptools.setup(
         "Operating System :: POSIX :: Linux",
         "Programming Language :: Python :: 3.6",
     ],
-    packages=["pywal"],
+    packages=["bum"],
     entry_points={
-        "console_scripts": ["wal=pywal.__main__:main"]
+        "console_scripts": ["bum=bum.__main__:main"]
     },
     python_requires=">=3.6",
     test_suite="tests",
