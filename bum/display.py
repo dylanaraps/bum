@@ -4,14 +4,14 @@ Display related functions.
 import mpv
 
 
-def init():
+def init(size=250):
     """Initialize mpv."""
     player = mpv.MPV(start_event_thread=False)
     player["force-window"] = "immediate"
     player["keep-open"] = "yes"
     player["image-display-duration"] = "inf"
-    player["geometry"] = "250x250-64-64"
-    player["autofit"] = "250x250"
+    player["geometry"] = f"{size}x{size}-64-64"
+    player["autofit"] = f"{size}x{size}"
     player["title"] = "bum"
 
     return player

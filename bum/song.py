@@ -11,13 +11,16 @@ from . import util
 def get():
     """Get the current playing song."""
     song = subprocess.getoutput("mpc current -f \
-                                 '%albumartist%💩%title%💩%album%'")
+                                 '%albumartist%💩%title%💩%album%💩%artist%'")
+    song = song.split("💩")
 
-    if song:
-        return song.split("💩")
+    if song[0] == "Various Artists":
+        song[0] = song[-1]
+
+    return song
 
 
-def get_art(cache_dir):
+def get_art(cache_dir, size):
     """Get the album art."""
     song_data = get()
 
@@ -25,7 +28,7 @@ def get_art(cache_dir):
         print("Nothing currently playing.")
         return
 
-    file_name = f"{song_data[0]}_{song_data[2]}.jpg".replace("/", "")
+    file_name = f"{song_data[0]}_{song_data[2]}_{size}.jpg".replace("/", "")
     file_name = cache_dir / file_name
 
     if file_name.is_file():
@@ -36,7 +39,7 @@ def get_art(cache_dir):
         print("album: Downloading album art...")
 
         brainz.init()
-        album_art = brainz.get_cover(song_data)
+        album_art = brainz.get_cover(song_data, size)
 
         if album_art:
             util.bytes_to_file(album_art, cache_dir / file_name)

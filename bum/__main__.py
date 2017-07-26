@@ -54,15 +54,15 @@ def main():
         """Handle 'pkill -USR1 bum'."""
         print("Recieved SUGUSR1, swapping album art.")
 
-        song.get_art(args.cache_dir)
+        song.get_art(args.cache_dir, args.size)
 
         # Args are required when using signal, but we don't need them.
         del sig, frame
 
     signal.signal(signal.SIGUSR1, signal_usr1)
-    disp = display.init()
+    disp = display.init(args.size)
 
-    song.get_art(args.cache_dir)
+    song.get_art(args.cache_dir, args.size)
 
     while True:
         display.launch(disp, args.cache_dir / "current.jpg")
