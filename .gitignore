@@ -1,0 +1,7 @@
+dist/*
+pywal.egg-info/*
+*.pyc
+subprocess
+re
+build/*
+.coverage
