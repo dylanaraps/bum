@@ -4,7 +4,8 @@
 
 Note: `bum` is meant to be used with files that don't have embedded album art (`mopidy-spotify`).
 
-![showcase](http://i.imgur.com/SIC0Ii3.gif)
+
+![showcase](http://i.imgur.com/uKomDoL.gif)
 
 
 ## Dependencies
