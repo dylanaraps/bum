@@ -15,7 +15,8 @@ def get_cover(song_data, size=250):
     """Download the cover art."""
     try:
         data = mus.search_releases(artist=song_data[0],
-                                   release=song_data[2], limit=1)
+                                   release=song_data[2],
+                                   date=song_data[3], limit=1)
         release_id = data["release-list"][0]["release-group"]["id"]
         return mus.get_release_group_image_front(release_id, size=size)
 
