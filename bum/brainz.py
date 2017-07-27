@@ -18,6 +18,8 @@ def get_cover(song_data, size=250):
                                    release=song_data[2],
                                    date=song_data[3], limit=1)
         release_id = data["release-list"][0]["release-group"]["id"]
+        print(f"album: Using release-id: {data['release-list'][0]['id']}")
+
         return mus.get_release_group_image_front(release_id, size=size)
 
     except mus.NetworkError:
