@@ -1,5 +1,7 @@
 # 🎵 bum
 
+[![PyPI](https://img.shields.io/pypi/v/bum.svg)](https://pypi.python.org/pypi/bum/) [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE.md) [![Build Status](https://travis-ci.org/dylanaraps/bum.svg?branch=master)](https://travis-ci.org/dylanaraps/bum)
+
 `bum` is a daemon that downloads album art for songs playing in `mpd` and displays them in a little window. `bum` doesn't loop on a timer, instead you can send it `SIGUSR1` to make it wake up and download album art for the current playing track. This makes `bum` lightweight and makes it idle at `~0%` CPU usage.
 
 Note: `bum` is meant to be used with files that don't have embedded album art (`mopidy-spotify`).
