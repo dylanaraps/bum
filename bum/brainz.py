@@ -21,7 +21,7 @@ def get_cover(song_data, size=250):
         return mus.get_release_group_image_front(release_id, size=size)
 
     except mus.NetworkError:
-        get_cover(song_data)
+        get_cover(song_data, size)
 
     except mus.ResponseError:
         print("error: Couldn't find album art for",
