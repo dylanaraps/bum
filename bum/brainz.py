@@ -25,4 +25,4 @@ def get_cover(song_data, size=250):
 
     except mus.ResponseError:
         print("error: Couldn't find album art for",
-              f"{song_data[0]} - {song_data[1]}")
+              f"{song_data[0]} - {song_data[2]}")

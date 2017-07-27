@@ -52,7 +52,7 @@ def main():
 
     def signal_usr1(sig, frame):
         """Handle 'pkill -USR1 bum'."""
-        print("Recieved SUGUSR1, swapping album art.")
+        print("signal: Recieved SUGUSR1, swapping album art.")
 
         song.get_art(args.cache_dir, args.size)
 

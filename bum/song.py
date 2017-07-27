@@ -29,7 +29,7 @@ def get_art(cache_dir, size):
     song_data = get()
 
     if len(song_data) < 2:
-        print("Nothing currently playing.")
+        print("album: Nothing currently playing.")
         return
 
     file_name = f"{song_data[0]}_{song_data[2]}_{size}.jpg".replace("/", "")
@@ -49,4 +49,4 @@ def get_art(cache_dir, size):
             util.bytes_to_file(album_art, cache_dir / file_name)
             util.bytes_to_file(album_art, cache_dir / "current.jpg")
 
-            print(f"album: Swapped art to {', '.join(song_data)}.")
+            print(f"album: Swapped art to {song_data[0]}, {song_data[2]}.")
