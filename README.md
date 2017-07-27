@@ -4,7 +4,7 @@
 
 `bum` is a daemon that downloads album art for songs playing in `mpd` and displays them in a little window. `bum` doesn't loop on a timer, instead you can send it `SIGUSR1` to make it wake up and download album art for the current playing track. This makes `bum` lightweight and makes it idle at `~0%` CPU usage.
 
-`bum` uses [musicbrainz](https://musicbrainz.org/) to source and download cover art, if an album is missing it's cover art you can easily create an account and fill in the data yourself.
+`bum` uses [musicbrainz](https://musicbrainz.org/) to source and download cover art, if an album is missing it's cover art you can easily create an account and fill in the data yourself. `bum` outputs a `release-id` which you can use to find the exact entry on musicbrainz.
 
 Note: `bum` is meant to be used with files that don't have embedded album art (`mopidy-spotify`).
 
