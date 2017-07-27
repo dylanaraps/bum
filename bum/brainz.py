@@ -16,7 +16,7 @@ def get_cover(song_data, size=250):
     try:
         data = mus.search_releases(artist=song_data[0],
                                    release=song_data[2],
-                                   date=song_data[3], limit=1)
+                                   limit=1)
         release_id = data["release-list"][0]["release-group"]["id"]
         print(f"album: Using release-id: {data['release-list'][0]['id']}")
 

@@ -14,7 +14,6 @@ def get():
                                 "'%albumartist%💩"
                                 "%title%💩"
                                 "%album%💩"
-                                "%date%💩"
                                 "%artist%'")
     song = song.split("💩")
 
