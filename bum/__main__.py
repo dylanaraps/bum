@@ -52,6 +52,8 @@ def main():
 
     def signal_usr1(sig, frame):
         """Handle 'pkill -USR1 bum'."""
+        # This function is here so it inherits main()'s scope.
+        # Signal doesn't allow us to send arguments to the handler.
         print("signal: Recieved SUGUSR1, swapping album art.")
 
         song.get_art(args.cache_dir, args.size)
