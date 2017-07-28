@@ -18,7 +18,6 @@ Note: `bum` is meant to be used with files that don't have embedded album art (`
 - `python-mpv`
 - `python-mpd2`
 - `musicbrainzngs`
-- `mpc`
 
 
 ## Installation
