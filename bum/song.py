@@ -2,6 +2,7 @@
 Get song info.
 """
 import shutil
+import os
 import mpd
 
 from . import brainz
@@ -14,12 +15,11 @@ def init():
 
     try:
         client.connect("localhost", 6600)
+        return client
 
     except ConnectionRefusedError:
-        print("warning: Connection refused to mpd/mopidy.")
-        return ""
-
-    return client
+        print("error: Connection refused to mpd/mopidy.")
+        os._exit(1)  # pylint: disable=W0212
 
 
 def get_art(cache_dir, size, client):

@@ -1,2 +1,5 @@
 [TYPECHECK]
 generated-members=send_idle,fetch_idle
+
+[MESSAGES CONTROL]
+disable=WO212
