@@ -1,2 +1,2 @@
-# pylint complains about this module.
-ignored-modules=mpd
+[TYPECHECK]
+generated-members=send_idle,fetch_idle
