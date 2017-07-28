@@ -13,9 +13,10 @@ import signal
 
 from . import display
 from . import song
+from . import util
 
 
-__version__ = "0.0.3"
+__version__ = "0.0.4"
 
 
 def get_args():
@@ -50,23 +51,11 @@ def main():
     args = get_args()
     process_args(args)
 
-    def signal_usr1(sig, frame):
-        """Handle 'pkill -USR1 bum'."""
-        # This function is here so it inherits main()'s scope.
-        # Signal doesn't allow us to send arguments to the handler.
-        print("signal: Recieved SUGUSR1, swapping album art.")
-
-        song.get_art(args.cache_dir, args.size)
-
-        # Args are required when using signal, but we don't need them.
-        del sig, frame
-
-    signal.signal(signal.SIGUSR1, signal_usr1)
+    signal.signal(signal.SIGUSR1, util.signal_usr1)
     disp = display.init(args.size)
 
-    song.get_art(args.cache_dir, args.size)
-
     while True:
+        song.get_art(args.cache_dir, args.size)
         display.launch(disp, args.cache_dir / "current.jpg")
         signal.pause()
 
