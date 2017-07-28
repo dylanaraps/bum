@@ -3,11 +3,13 @@ Musicbrainz related functions.
 """
 import musicbrainzngs as mus
 
+from .__init__ import __version__
+
 
 def init():
     """Initialize musicbrainz."""
     mus.set_useragent("python-bum: A cover art daemon.",
-                      "0.0.1",
+                      __version__,
                       "https://github.com/dylanaraps/bum")
 
 
