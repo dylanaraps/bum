@@ -2,7 +2,6 @@
 Get song info.
 """
 import shutil
-import time
 import mpd
 
 from . import brainz
@@ -40,10 +39,6 @@ def get_art(cache_dir, size, client):
 
     else:
         print("album: Downloading album art...")
-
-        # Sleep here so that we don't queue up too many downloads
-        # from the user mashing next song.
-        time.sleep(1)
 
         brainz.init()
         album_art = brainz.get_cover(song, size)
