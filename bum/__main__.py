@@ -16,7 +16,7 @@ from . import song
 from . import util
 
 
-__version__ = "0.0.4"
+__version__ = "0.0.5"
 
 
 def get_args():
