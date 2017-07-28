@@ -57,7 +57,7 @@ def main():
         display.launch(disp, args.cache_dir / "current.jpg")
         client.send_idle()
 
-        if client.fetch_idle()[0] == "player":
+        if client.fetch_idle(["player"]):
             print("album: Received player event from mpd. Swapping cover art.")
             continue
 
