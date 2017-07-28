@@ -2,36 +2,36 @@
 Get song info.
 """
 import shutil
-import subprocess
+import time
+import mpd
 
 from . import brainz
 from . import util
 
 
-def get():
-    """Get the current playing song."""
-    song = subprocess.getoutput("mpc current -f "
-                                "'%albumartist%💩"
-                                "%title%💩"
-                                "%album%💩"
-                                "%artist%'")
-    song = song.split("💩")
+def init():
+    """Initialize mpd."""
+    client = mpd.MPDClient()
 
-    if song[0] == "Various Artists":
-        song[0] = song[-1]
+    try:
+        client.connect("localhost", 6600)
 
-    return song
+    except ConnectionRefusedError:
+        print("warning: Connection refused to mpd/mopidy.")
+        return ""
+
+    return client
 
 
-def get_art(cache_dir, size):
+def get_art(cache_dir, size, client):
     """Get the album art."""
-    song_data = get()
+    song = client.currentsong()
 
-    if len(song_data) < 2:
+    if len(song) < 2:
         print("album: Nothing currently playing.")
         return
 
-    file_name = f"{song_data[0]}_{song_data[2]}_{size}.jpg".replace("/", "")
+    file_name = f"{song['artist']}_{song['album']}_{size}.jpg".replace("/", "")
     file_name = cache_dir / file_name
 
     if file_name.is_file():
@@ -41,11 +41,15 @@ def get_art(cache_dir, size):
     else:
         print("album: Downloading album art...")
 
+        # Sleep here so that we don't queue up too many downloads
+        # from the user mashing next song.
+        time.sleep(1)
+
         brainz.init()
-        album_art = brainz.get_cover(song_data, size)
+        album_art = brainz.get_cover(song, size)
 
         if album_art:
             util.bytes_to_file(album_art, cache_dir / file_name)
             util.bytes_to_file(album_art, cache_dir / "current.jpg")
 
-            print(f"album: Swapped art to {song_data[0]}, {song_data[2]}.")
+            print(f"album: Swapped art to {song['artist']}, {song['album']}.")

@@ -1,0 +1,2 @@
+# pylint complains about this module.
+ignored-modules=mpd

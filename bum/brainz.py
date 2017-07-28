@@ -11,11 +11,11 @@ def init():
                       "https://github.com/dylanaraps/bum")
 
 
-def get_cover(song_data, size=250):
+def get_cover(song, size=250):
     """Download the cover art."""
     try:
-        data = mus.search_releases(artist=song_data[0],
-                                   release=song_data[2],
+        data = mus.search_releases(artist=song["artist"],
+                                   release=song["album"],
                                    limit=1)
         release_id = data["release-list"][0]["release-group"]["id"]
         print(f"album: Using release-id: {data['release-list'][0]['id']}")
@@ -23,8 +23,8 @@ def get_cover(song_data, size=250):
         return mus.get_release_group_image_front(release_id, size=size)
 
     except mus.NetworkError:
-        get_cover(song_data, size)
+        get_cover(song, size)
 
     except mus.ResponseError:
         print("error: Couldn't find album art for",
-              f"{song_data[0]} - {song_data[2]}")
+              f"{song['artist']} - {song['album']}")

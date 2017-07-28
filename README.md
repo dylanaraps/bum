@@ -2,7 +2,7 @@
 
 [![PyPI](https://img.shields.io/pypi/v/bum.svg)](https://pypi.python.org/pypi/bum/) [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE.md) [![Build Status](https://travis-ci.org/dylanaraps/bum.svg?branch=master)](https://travis-ci.org/dylanaraps/bum)
 
-`bum` is a daemon that downloads album art for songs playing in `mpd` and displays them in a little window. `bum` doesn't loop on a timer, instead you can send it `SIGUSR1` to make it wake up and download album art for the current playing track. This makes `bum` lightweight and makes it idle at `~0%` CPU usage.
+`bum` is a daemon that downloads album art for songs playing in `mpd`/`mopidy` and displays them in a little window. `bum` doesn't loop on a timer, instead it waits for `mpd`/`mopidy` to send a `player` event. When it receives a `player` event it wakes up and downloads album art for the current playing track. This makes `bum` lightweight and makes it idle at `~0%` CPU usage.
 
 `bum` uses [musicbrainz](https://musicbrainz.org/) to source and download cover art, if an album is missing it's cover art you can easily create an account and fill in the data yourself. `bum` outputs a `release-id` which you can use to find the exact entry on musicbrainz.
 
@@ -16,6 +16,7 @@ Note: `bum` is meant to be used with files that don't have embedded album art (`
 
 - `python 3.6+`
 - `python-mpv`
+- `python-mpd2`
 - `musicbrainzngs`
 - `mpc`
 
@@ -40,32 +41,4 @@ optional arguments:
   --cache_dir "/path/to/dir"
                         Where to store the downloaded cover art.
   --version             Print "bum" version.
-```
-
-
-## Customization
-
-### ncmpcpp
-
-You can configure `ncmpcpp` to send `SIGUSR1` to `bum` on every song change.
-
-
-```
-# .ncmpcpp/config
-
-# Execute bum on song change.
-execute_on_song_change = "pkill -USR1 bum"
-```
-
-### shell
-
-You can use `mpc idleloop` to send `SIGUSR1` to `bum` on every song change.
-
-
-```sh
-#!/bin/sh
-# Wake up bum on song change.
-while :; do
-    mpc idleloop player | pkill -USR1 bum$
-done
 ```

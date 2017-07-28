@@ -4,7 +4,7 @@ python:
     - "3.6"
 
 install:
-    - pip install flake8 pylint python-mpv musicbrainzngs
+    - pip install flake8 pylint python-mpv python-mpd2 musicbrainzngs
 
 script:
     - flake8 bum setup.py

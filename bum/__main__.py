@@ -9,14 +9,12 @@ Created by Dylan Araps
 """
 import argparse
 import pathlib
-import signal
 
 from . import display
 from . import song
-from . import util
 
 
-__version__ = "0.0.5"
+__version__ = "0.1.0"
 
 
 def get_args():
@@ -51,13 +49,17 @@ def main():
     args = get_args()
     process_args(args)
 
-    signal.signal(signal.SIGUSR1, util.signal_usr1)
     disp = display.init(args.size)
+    client = song.init()
 
     while True:
-        song.get_art(args.cache_dir, args.size)
+        song.get_art(args.cache_dir, args.size, client)
         display.launch(disp, args.cache_dir / "current.jpg")
-        signal.pause()
+        client.send_idle()
+
+        if client.fetch_idle()[0] == "player":
+            print("album: Received player event from mpd. Swapping cover art.")
+            continue
 
 
 if __name__ == "__main__":
