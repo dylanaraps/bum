@@ -23,7 +23,7 @@ Note: `bum` is meant to be used with files that don't have embedded album art (`
 ## Installation
 
 ```py
-pip install bum
+pip3 install --user bum
 ```
 
 
