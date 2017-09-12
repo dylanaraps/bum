@@ -9,12 +9,12 @@ from . import brainz
 from . import util
 
 
-def init():
+def init(port=6600):
     """Initialize mpd."""
     client = mpd.MPDClient()
 
     try:
-        client.connect("localhost", 6600)
+        client.connect("localhost", f"{port}")
         return client
 
     except ConnectionRefusedError:
