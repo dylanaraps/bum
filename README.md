@@ -43,7 +43,7 @@ optional arguments:
   --cache_dir "/path/to/dir"
                         Where to store the downloaded cover art.
   --version             Print "bum" version.
-  --port                custom Mpd port
+  --port                Use a custom mpd port.
 ```
 
 

@@ -34,7 +34,7 @@ def get_args():
                      help="Print \"bum\" version.")
 
     arg.add_argument("--port",
-                     help="What is you MPD port.",
+                     help="Use a custom mpd port.",
                      default=6600)
 
     return arg.parse_args()
