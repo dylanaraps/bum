@@ -14,7 +14,7 @@ def init(port=6600):
     client = mpd.MPDClient()
 
     try:
-        client.connect("localhost", f"{port}")
+        client.connect("localhost", port)
         return client
 
     except ConnectionRefusedError:
