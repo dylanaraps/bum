@@ -33,6 +33,10 @@ def get_args():
     arg.add_argument("--version", action="store_true",
                      help="Print \"bum\" version.")
 
+    arg.add_argument("--port",
+                     help="Use a custom mpd port.",
+                     default=6600)
+
     return arg.parse_args()
 
 
@@ -49,7 +53,7 @@ def main():
     process_args(args)
 
     disp = display.init(args.size)
-    client = song.init()
+    client = song.init(args.port)
 
     while True:
         song.get_art(args.cache_dir, args.size, client)
