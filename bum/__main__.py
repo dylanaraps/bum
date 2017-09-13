@@ -32,10 +32,10 @@ def get_args():
 
     arg.add_argument("--version", action="store_true",
                      help="Print \"bum\" version.")
-    
+
     arg.add_argument("--port",
-                    help="What is you MPD port.",
-                    default=6600)
+                     help="What is you MPD port.",
+                     default=6600)
 
     return arg.parse_args()
 
