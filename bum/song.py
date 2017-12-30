@@ -2,32 +2,51 @@
 Get song info.
 """
 import shutil
-import os
-import mpd
+import sys
 
 from . import brainz
 from . import util
 
 
-def init(port=6600):
-    """Initialize mpd."""
-    client = mpd.MPDClient()
+def get_player():
+    """Detect music player."""
+    players = ["mpd", "mopidy", "cmus", "GnomeMusic", "elisa",
+               "Lollypop", "clementine", "juk", "Bluemindo",
+               "guayadeque", "yarock", "deepinmusic", "tomahawk",
+               "audacious", "spotify"]
+    player = [player for player in players if util.get_pid(player)]
 
-    try:
-        client.connect("localhost", port)
-        return client
-
-    except ConnectionRefusedError:
-        print("error: Connection refused to mpd/mopidy.")
-        os._exit(1)  # pylint: disable=W0212
+    if player:
+        return player[0]
 
 
-def get_art(cache_dir, size, client):
+def get_song(player, port):
+    """Get current song."""
+    if player in ["mpd", "mopidy"]:
+        from .players import musicpd
+        client = musicpd.init(port)
+        return musicpd.get_song(client)
+
+    elif player == "cmus":
+        from .players import cmus
+        client = cmus.init(port)
+        return cmus.get_song(client)
+
+    from .players import mpris
+    client = mpris.init()
+    return mpris.get_song(client)
+
+
+def get_art(cache_dir, size, player, port):
     """Get the album art."""
-    song = client.currentsong()
+    song = get_song(player, port)
 
     if len(song) < 2:
         print("album: Nothing currently playing.")
+        return
+
+    if "album" not in song or "artist" not in song:
+        print("album: Tags are missing, skipping track.")
         return
 
     file_name = f"{song['artist']}_{song['album']}_{size}.jpg".replace("/", "")
