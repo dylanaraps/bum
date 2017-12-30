@@ -9,6 +9,7 @@ Created by Dylan Araps
 """
 import argparse
 import pathlib
+import signal
 
 from . import display
 from . import song
@@ -34,8 +35,7 @@ def get_args():
                      help="Print \"bum\" version.")
 
     arg.add_argument("--port",
-                     help="Use a custom mpd port.",
-                     default=6600)
+                     help="Use a custom mpd port.")
 
     return arg.parse_args()
 
@@ -51,18 +51,21 @@ def main():
     """Main script function."""
     args = get_args()
     process_args(args)
+    player = song.get_player()
 
+    def signal_usr1(sig, frame):
+        """Handle 'pkill -USR1 bum'."""
+        print("Recieved SUGUSR1, swapping album art.")
+        song.get_art(args.cache_dir, args.size, player, args.port)
+        del sig, frame
+
+    signal.signal(signal.SIGUSR1, signal_usr1)
     disp = display.init(args.size)
-    client = song.init(args.port)
+    song.get_art(args.cache_dir, args.size, player, args.port)
 
     while True:
-        song.get_art(args.cache_dir, args.size, client)
         display.launch(disp, args.cache_dir / "current.jpg")
-        client.send_idle()
-
-        if client.fetch_idle(["player"]):
-            print("album: Received player event from mpd. Swapping cover art.")
-            continue
+        signal.pause()
 
 
 if __name__ == "__main__":
