@@ -10,9 +10,14 @@ from . import util
 
 def get_player():
     """Detect music player."""
-    players = ["mpd", "mopidy", "cmus"]
+    players = ["mpd", "mopidy", "cmus", "GnomeMusic", "elisa",
+               "Lollypop", "clementine", "juk", "Bluemindo",
+               "guayadeque", "yarock", "deepinmusic", "tomahawk",
+               "audacious", "spotify"]
     player = [player for player in players if util.get_pid(player)]
-    return player[0]
+
+    if player:
+        return player[0]
 
 
 def get_song(player, port):
@@ -27,9 +32,9 @@ def get_song(player, port):
         client = cmus.init(port)
         return cmus.get_song(client)
 
-    else:
-        print("error: No music player found.")
-        sys.exit(1)
+    from .players import mpris
+    client = mpris.init()
+    return mpris.get_song(client)
 
 
 def get_art(cache_dir, size, player, port):

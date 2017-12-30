@@ -25,6 +25,7 @@ Note: `bum` is meant to be used with files that don't have embedded album art (`
 
 - `cmus`: `pycmus`
 - `mpd`/`mopidy`: `python-mpd2`
+- `dbus players`: `playerctl`, `pygobject`
 
 
 ## Installation
