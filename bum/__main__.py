@@ -37,6 +37,10 @@ def get_args():
                      help="Use a custom mpd port.",
                      default=6600)
 
+    arg.add_argument("--server",
+                     help="Use a remote server instead of localhost.",
+                     default="localhost")
+
     return arg.parse_args()
 
 
@@ -53,7 +57,7 @@ def main():
     process_args(args)
 
     disp = display.init(args.size)
-    client = song.init(args.port)
+    client = song.init(args.port, args.server)
 
     while True:
         song.get_art(args.cache_dir, args.size, client)
