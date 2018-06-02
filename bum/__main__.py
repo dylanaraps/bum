@@ -26,6 +26,10 @@ def get_args():
                      help="what size to display the album art in.",
                      default=250)
 
+    arg.add_argument("--position", metavar="\"=x+y\"",
+                     help="what position to display the album art at.",
+                     default="+0+0")
+
     arg.add_argument("--cache_dir", metavar="\"/path/to/dir\"",
                      help="Where to store the downloaded cover art.",
                      default=pathlib.Path.home() / ".cache/bum")
@@ -55,8 +59,7 @@ def main():
     """Main script function."""
     args = get_args()
     process_args(args)
-
-    disp = display.init(args.size)
+    disp = display.init(args.size,args.position)
     client = song.init(args.port, args.server)
 
     while True:
