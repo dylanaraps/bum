@@ -27,7 +27,8 @@ def get_args():
                      default=250)
 
     arg.add_argument("--position", metavar="\"=x+y\"",
-                     help="what position to display the album art at.",
+                     help='''what position to display the album art at.
+                             example: bum --position=-10+10''',
                      default="+0+0")
 
     arg.add_argument("--cache_dir", metavar="\"/path/to/dir\"",
