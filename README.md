@@ -1,20 +1,49 @@
-# 🎵 bum
+![bum](https://i.imgur.com/on4m5ir.png "🎵 bum")  
 
 [![PyPI](https://img.shields.io/pypi/v/bum.svg)](https://pypi.python.org/pypi/bum/)
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE.md)
 [![Build Status](https://travis-ci.org/dylanaraps/bum.svg?branch=master)](https://travis-ci.org/dylanaraps/bum)
 [![Donate](https://img.shields.io/badge/donate-patreon-yellow.svg)](https://www.patreon.com/dyla)
 
-`bum` is a daemon that downloads album art for songs playing in `mpd`/`mopidy` and displays them in a little window. `bum` doesn't loop on a timer, instead it waits for `mpd`/`mopidy` to send a `player` event. When it receives a `player` event it wakes up and downloads album art for the current playing track. This makes `bum` lightweight and makes it idle at `~0%` CPU usage.
+`bum` is a daemon that downloads album art for songs playing in `mpd`/`mopidy` and displays them in a little window. the window can be spawned at user specified position.  `bum` doesn't loop on a timer, instead it waits for `mpd`/`mopidy` to send a `player` event. When it receives a `player` event it wakes up and downloads album art for the current playing track. This makes `bum` lightweight and makes it idle at `~0%` CPU usage.
 
 `bum` uses [musicbrainz](https://musicbrainz.org/) to source and download cover art, if an album is missing it's cover art you can easily create an account and fill in the data yourself. `bum` outputs a `release-id` which you can use to find the exact entry on musicbrainz.
 
-Note: `bum` is meant to be used with files that don't have embedded album art (`mopidy-spotify`).
+Note: `bum` is meant to be used with files that don't have embedded album art (`mopidy-spotify`).  
 
-## New Feature
-* specify the exact position for spawning the window at using the `--position=` argument
 ![showcase](http://i.imgur.com/uKomDoL.gif)
 
+## New Feature
+
+now you can specify the exact position for spawning the album art window at , using the `--position=` argument.  
+
+![feature](https://i.imgur.com/vEn7ezI.gifv)  
+
+refer to this graph for getting a better idea on how to position. the arrows indicate in which direction the window would be pushed.    
+```bash
+
+                             | +y |
+                             |    V
+                             |
+                             |
+                             |
+                             |
+                             |
+                             |
++x --->                      |                      <---  -x
+_____________________________|______________________________
+                             |+0+0(default)
+                             |
+                             |
+                             |
+                             |
+                             |
+                             |
+                             |
+                             |    ^
+                             | -y |
+
+```
 
 ## Dependencies
 
@@ -54,7 +83,7 @@ optional arguments:
 
 ## Donate
 
-Donations will allow me to spend more time working on `bum`.
+Donations will allow the creator of the project to spend more time working on `bum`.
 
 If you like `bum` and want to give back in some way you can donate here:
 
