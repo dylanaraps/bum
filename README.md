@@ -5,7 +5,7 @@
 [![Build Status](https://travis-ci.org/dylanaraps/bum.svg?branch=master)](https://travis-ci.org/dylanaraps/bum)
 [![Donate](https://img.shields.io/badge/donate-patreon-yellow.svg)](https://www.patreon.com/dyla)
 
-`bum` is a daemon that downloads album art for songs playing in `mpd`/`mopidy` and displays them in a little window. the window can be spawned at user specified position.  `bum` doesn't loop on a timer, instead it waits for `mpd`/`mopidy` to send a `player` event. When it receives a `player` event it wakes up and downloads album art for the current playing track. This makes `bum` lightweight and makes it idle at `~0%` CPU usage.
+`bum` is a daemon that downloads album art for songs playing in `mpd`/`mopidy` and displays them in a little window. the window can be spawned at any user specified position.  `bum` doesn't loop on a timer, instead it waits for `mpd`/`mopidy` to send a `player` event. When it receives a `player` event it wakes up and downloads album art for the current playing track. This makes `bum` lightweight and makes it idle at `~0%` CPU usage.
 
 `bum` uses [musicbrainz](https://musicbrainz.org/) to source and download cover art, if an album is missing it's cover art you can easily create an account and fill in the data yourself. `bum` outputs a `release-id` which you can use to find the exact entry on musicbrainz.
 
@@ -17,9 +17,9 @@ Note: `bum` is meant to be used with files that don't have embedded album art (`
 
 now you can specify the exact position for spawning the album art window at , using the `--position=` argument.  
 
-![position](https://i.imgur.com/vEn7ezI.gi://github.com/yedhink/bum/blob/displayLocation/previews/bumPosition.gif)
+![position](https://i.imgur.com/vEn7ezI.gi://github.com/yedhink/bum/blob/displayLocation/previews/bumPosition.gif)  
 
-refer to this graph for getting a better idea on how to position. the arrows indicate in which direction the window would be pushed.    
+refer to this graph for getting a better idea on how to position. the arrows indicate in which direction the window would be pushed.  
 ```bash
 
                              | +y |
