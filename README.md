@@ -15,7 +15,7 @@ Note: `bum` is meant to be used with files that don't have embedded album art (`
 
 ## New Feature
 
-now you can specify the exact position for spawning the album art window at , using the `--position=` argument.  
+now you can specify the exact position for spawning the album art window at , using the `--position=` option.  
 
 ![position](https://github.com/yedhink/bum/blob/displayLocation/logo/bumPosition.gif)  
 
