@@ -60,7 +60,7 @@ def main():
     """Main script function."""
     args = get_args()
     process_args(args)
-    disp = display.init(args.size,args.position)
+    disp = display.init(args.size, args.position)
     client = song.init(args.port, args.server)
 
     while True:
