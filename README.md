@@ -1,4 +1,4 @@
-![bum](https://imgur.com/IewdAZS.png "🎵 bum")  
+![bum](https://imgur.com/bhNvzlY.png "🎵 bum")  
 
 [![PyPI](https://img.shields.io/pypi/v/bum.svg)](https://pypi.python.org/pypi/bum/)
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE.md)
@@ -17,7 +17,7 @@ Note: `bum` is meant to be used with files that don't have embedded album art (`
 
 now you can specify the exact position for spawning the album art window at , using the `--position=` argument.  
 
-![feature](https://imgur.com/vEn7ezI.gif)  
+![](https://imgur.com/vEn7ezI)
 
 refer to this graph for getting a better idea on how to position. the arrows indicate in which direction the window would be pushed.    
 ```bash
