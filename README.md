@@ -11,7 +11,8 @@
 
 Note: `bum` is meant to be used with files that don't have embedded album art (`mopidy-spotify`).
 
-
+## New Feature
+* specify the exact position for spawning the window at using the `--position=` argument
 ![showcase](http://i.imgur.com/uKomDoL.gif)
 
 
@@ -33,17 +34,21 @@ pip3 install --user bum
 ## Usage
 
 ```sh
-usage: bum [-h] [--size "px"] [--cache_dir "/path/to/dir"] [--version]
+usage: bum [-h] [--size "px"] [--position "=x+y"] [--cache_dir "/path/to/dir"]
+           [--version] [--port PORT] [--server SERVER]
 
 bum - Download and display album art for mpd tracks.
 
 optional arguments:
   -h, --help            show this help message and exit
   --size "px"           what size to display the album art in.
+  --position "=x+y"     what position to display the album art at. example:
+                        bum --position=-10+10
   --cache_dir "/path/to/dir"
                         Where to store the downloaded cover art.
   --version             Print "bum" version.
-  --port                Use a custom mpd port.
+  --port PORT           Use a custom mpd port.
+  --server SERVER       Use a remote server instead of localhost.
 ```
 
 
