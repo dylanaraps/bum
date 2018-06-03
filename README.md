@@ -17,7 +17,7 @@ Note: `bum` is meant to be used with files that don't have embedded album art (`
 
 now you can specify the exact position for spawning the album art window at , using the `--position=` argument.  
 
-![position](https://i.imgur.com/vEn7ezI.gif)
+![position](https://i.imgur.com/vEn7ezI.gi://github.com/yedhink/bum/blob/displayLocation/previews/bumPosition.gif)
 
 refer to this graph for getting a better idea on how to position. the arrows indicate in which direction the window would be pushed.    
 ```bash
