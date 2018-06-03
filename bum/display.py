@@ -4,7 +4,7 @@ Display related functions.
 import mpv
 
 
-def init(size=250,position="+0+0"):
+def init(size=250, position="+0+0"):
     """Initialize mpv."""
     player = mpv.MPV(start_event_thread=False)
     player["force-window"] = "immediate"
