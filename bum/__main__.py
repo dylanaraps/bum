@@ -41,9 +41,9 @@ def get_args():
                      help="Use a remote server instead of localhost.",
                      default="localhost")
 
-    arg.add_argument("--no-display",
-                     help="Only download album art, don't display",
-                     default=False)
+    arg.add_argument("--no_display",
+                     action="store_true",
+                     help="Only download album art, don't display.")
 
     return arg.parse_args()
 
@@ -60,14 +60,14 @@ def main():
     args = get_args()
     process_args(args)
 
-    if not args.no-display:
+    if not args.no_display:
         disp = display.init(args.size)
 
     client = song.init(args.port, args.server)
 
     while True:
         song.get_art(args.cache_dir, args.size, client)
-        if not args.no-display:
+        if not args.no_display:
             display.launch(disp, args.cache_dir / "current.jpg")
 
         client.send_idle()
