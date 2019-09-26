@@ -1,11 +1,12 @@
 """bum - setup.py"""
 import setuptools
+import sys
 
 try:
     import bum
 except (ImportError, SyntaxError):
     print("error: bum requires Python 3.6 or greater.")
-    quit(1)
+    sys.exit(1)
 
 
 try:
