@@ -41,7 +41,6 @@ setuptools.setup(
     },
     install_requires=[
         "musicbrainzngs",
-        "python-mpv",
         "python-mpd2",
     ],
     python_requires=">=3.6",

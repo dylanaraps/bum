@@ -2,49 +2,64 @@
 Get song info.
 """
 import shutil
-import os
 import mpd
+import select
 
 from . import brainz
 from . import util
 
 
-def init(port=6600, server="localhost"):
-    """Initialize mpd."""
-    client = mpd.MPDClient()
+class Song():
+    def __init__(self, port=6600, server="localhost"):
+        """Initialize mpd."""
+        self._client = mpd.MPDClient()
 
-    try:
-        client.connect(server, port)
-        return client
+        try:
+            self._client.connect(server, port)
 
-    except ConnectionRefusedError:
-        print("error: Connection refused to mpd/mopidy.")
-        os._exit(1)  # pylint: disable=W0212
+        except ConnectionRefusedError:
+            raise RuntimeError("error: Connection refused to mpd/mopidy.")
 
+        self._client.send_idle('player')
 
-def get_art(cache_dir, size, client):
-    """Get the album art."""
-    song = client.currentsong()
+    def currentsong(self):
+        self._client.noidle()
+        result = self._client.currentsong()
+        self._client.send_idle('player')
+        return result
 
-    if len(song) < 2:
-        print("album: Nothing currently playing.")
-        return
+    def status(self):
+        self._client.noidle()
+        result = self._client.status()
+        self._client.send_idle('player')
+        return result
 
-    file_name = f"{song['artist']}_{song['album']}_{size}.jpg".replace("/", "")
-    file_name = cache_dir / file_name
+    def update_pending(self, timeout=0):
+        result = select.select([self._client], [], [], 0.1)[0]
+        return self._client in result
 
-    if file_name.is_file():
-        shutil.copy(file_name, cache_dir / "current.jpg")
-        print("album: Found cached art.")
+    def get_art(self, cache_dir, size):
+        """Get the album art."""
+        song = self.currentsong()
+        if len(song) < 2:
+            print("album: Nothing currently playing.")
+            return
 
-    else:
-        print("album: Downloading album art...")
+        file_name = f"{song['artist']}_{song['album']}_{size}.jpg".replace("/", "")
+        file_name = cache_dir / file_name
 
-        brainz.init()
-        album_art = brainz.get_cover(song, size)
+        if file_name.is_file():
+            shutil.copy(file_name, cache_dir / "current.jpg")
+            print("album: Found cached art.")
 
-        if album_art:
-            util.bytes_to_file(album_art, cache_dir / file_name)
-            util.bytes_to_file(album_art, cache_dir / "current.jpg")
+        else:
+            print("album: Downloading album art...")
 
-            print(f"album: Swapped art to {song['artist']}, {song['album']}.")
+            brainz.init()
+            album_art = brainz.get_cover(song, size)
+
+            if album_art:
+                util.bytes_to_file(album_art, cache_dir / file_name)
+                util.bytes_to_file(album_art, cache_dir / "current.jpg")
+
+                print(f"album: Swapped art to {song['artist']}, {song['album']}.")
