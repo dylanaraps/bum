@@ -10,6 +10,7 @@ Created by Dylan Araps
 import argparse
 import pathlib
 import time
+import sys
 
 from . import display
 from .song import Song
@@ -68,7 +69,7 @@ def process_args(args):
     """Process the arguments."""
     if args.version:
         print(f"bum {__version__}")
-        exit(0)
+        sys.exit(0)
 
 
 def main():
