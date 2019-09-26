@@ -13,7 +13,7 @@ import time
 import sys
 
 from . import display
-from .song import Song
+from . import song
 
 from .__init__ import __version__
 
@@ -22,6 +22,10 @@ display_types = {
     'dummy': display.DisplayDummy,
     'tk': display.DisplayTK,
     'mpv': display.DisplayMPV
+}
+
+client_types = {
+    'mpd': song.ClientMPD
 }
 
 
@@ -62,6 +66,10 @@ def get_args():
                      help="Display class to use.",
                      default='dummy')
 
+    arg.add_argument("--client", choices=client_types.keys(),
+                     help="Client class to use.",
+                     default='mpd')
+
     return arg.parse_args()
 
 
@@ -84,7 +92,7 @@ def main():
 
     display = display_types[args.display](args.size)
 
-    client = Song(args.port, args.server)
+    client = client_types[args.client](args.port, args.server)
 
     last_track = ''
     last_update = 0

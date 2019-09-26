@@ -9,7 +9,7 @@ from . import brainz
 from . import util
 
 
-class Song():
+class ClientMPD():
     def __init__(self, port=6600, server="localhost"):
         """Initialize mpd."""
         self._client = mpd.MPDClient()
