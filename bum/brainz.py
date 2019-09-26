@@ -1,6 +1,7 @@
 """
 Musicbrainz related functions.
 """
+import time
 import musicbrainzngs as mus
 
 from .__init__ import __version__
@@ -13,7 +14,7 @@ def init():
                       "https://github.com/dylanaraps/bum")
 
 
-def get_cover(song, size=250):
+def get_cover(song, size=250, retry_delay=5, retries=5):
     """Download the cover art."""
     try:
         data = mus.search_releases(artist=song["artist"],
@@ -25,7 +26,11 @@ def get_cover(song, size=250):
         return mus.get_release_group_image_front(release_id, size=size)
 
     except mus.NetworkError:
-        get_cover(song, size)
+        if retries == 0:
+            raise mus.NetworkError("Failure connecting to MusicBrainz.org")
+        print(f"warning: Retrying download. {retries} retries left!")
+        time.sleep(retry_delay)
+        get_cover(song, size, retries=retries - 1)
 
     except mus.ResponseError:
         print("error: Couldn't find album art for",
