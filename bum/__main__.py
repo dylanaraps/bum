@@ -28,7 +28,7 @@ def get_args():
     """Get the script arguments."""
     description = "bum - Download and display album art \
                    for mpd tracks."
-    arg = argparse.ArgumentParser(description=description)
+    arg = argparse.ArgumentParser("bum", description=description)
 
     arg.add_argument("--update-interval", metavar="\"i\"",
                      help="overlay update interval in seconds.",

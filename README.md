@@ -18,10 +18,14 @@ Note: `bum` is meant to be used with files that don't have embedded album art (`
 ## Dependencies
 
 - `python 3.6+`
-- `python-mpv`
 - `python-mpd2`
 - `musicbrainzngs`
 
+### Optional
+
+bum supports multiple display outputs, specified using `--display {dummy,tk,mpv}`, you must install the dependencies required for your chosen output:
+
+- `python-mpv` - for mpv output
 
 ## Installation
 
@@ -33,17 +37,25 @@ pip3 install --user bum
 ## Usage
 
 ```sh
-usage: bum [-h] [--size "px"] [--cache_dir "/path/to/dir"] [--version]
+usage: bum [-h] [--update-interval "i"] [--size "px"]
+                   [--cache_dir "/path/to/dir"] [--version] [--port PORT]
+                   [--server SERVER] [--no_display] [--display {dummy,tk,mpv}]
 
 bum - Download and display album art for mpd tracks.
 
 optional arguments:
   -h, --help            show this help message and exit
+  --update-interval "i"
+                        overlay update interval in seconds.
   --size "px"           what size to display the album art in.
   --cache_dir "/path/to/dir"
                         Where to store the downloaded cover art.
   --version             Print "bum" version.
-  --port                Use a custom mpd port.
+  --port PORT           Use a custom mpd port.
+  --server SERVER       Use a remote server instead of localhost.
+  --no_display          Only download album art, don't display.
+  --display {dummy,tk,mpv}
+                        Display class to use.
 ```
 
 

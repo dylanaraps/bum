@@ -43,6 +43,10 @@ setuptools.setup(
         "musicbrainzngs",
         "python-mpd2",
     ],
+    extras_require={
+        'mpv': ["python-mpv"],
+        'tk': ["tk", "pil"],
+    },
     python_requires=">=3.6",
     test_suite="tests",
     include_package_data=True
