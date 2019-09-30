@@ -26,6 +26,8 @@ Note: `bum` is meant to be used with files that don't have embedded album art (`
 bum supports multiple display outputs, specified using `--display {dummy,tk,mpv}`, you must install the dependencies required for your chosen output:
 
 - `python-mpv` - for mpv output
+- `python3-pil`, `python3-tk` and `python3-pil.imagetk` plus `fonts` and `font_connection` from pypi - for tk/PIL output
+- `st7789` - for ST7789 1.3" 240x240 LCD output
 
 ## Installation
 
