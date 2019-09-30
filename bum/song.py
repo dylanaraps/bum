@@ -22,6 +22,9 @@ class ClientMPD():
 
         self._client.send_idle('player')
 
+    def add_args(argparse):
+        pass
+
     def currentsong(self):
         self._client.noidle()
         result = self._client.currentsong()

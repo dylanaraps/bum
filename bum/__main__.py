@@ -40,6 +40,10 @@ def get_args():
                      help="overlay update interval in seconds.",
                      default=1)
 
+    arg.add_argument("--fps",
+                     help="frames per second.",
+                     type=int, default=30)
+
     arg.add_argument("--size", metavar="\"px\"",
                      help="what size to display the album art in.",
                      default=240)
@@ -72,6 +76,26 @@ def get_args():
                      help="Client class to use.",
                      default='mpd')
 
+    # Strip out --help so we can parse_known_args
+    # without triggering help text output.
+    has_help = False
+    try:
+        sys.argv.remove('--help')
+        has_help = True
+    except ValueError:
+        pass
+
+    args, remaining = arg.parse_known_args()
+
+    # Add display/client specific args into the parser
+    display_types[args.display].add_args(arg)
+
+    client_types[args.client].add_args(arg)
+
+    # Add --help back if it was supplied
+    if has_help:
+        sys.argv.append('--help')
+
     return arg.parse_args()
 
 
@@ -92,7 +116,7 @@ def main():
         print("Warning --no_display overrides --display option!")
         args.display = 'dummy'
 
-    display = display_types[args.display](args.size)
+    display = display_types[args.display](args)
 
     client = client_types[args.client](args.port, args.server)
 
@@ -128,7 +152,7 @@ def main():
 
         display.redraw()
 
-        time.sleep(1.0 / 60.0)
+        time.sleep(1.0 / args.fps)
 
 
 if __name__ == "__main__":
