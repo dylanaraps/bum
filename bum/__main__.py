@@ -21,7 +21,8 @@ from .__init__ import __version__
 display_types = {
     'dummy': display.DisplayDummy,
     'tk': display.DisplayTK,
-    'mpv': display.DisplayMPV
+    'mpv': display.DisplayMPV,
+    'st7789': display.DisplayST7789
 }
 
 client_types = {
@@ -102,24 +103,27 @@ def main():
             status = client.status()
             currentsong = client.currentsong()
 
-            current_track = f"{currentsong['title']} - {currentsong['artist']}, {currentsong['album']}"
-            if current_track != last_track:
-                client.get_art(args.cache_dir, args.size)
-                display.update_album_art(args.cache_dir / "current.jpg")
-                last_track = current_track
+            if status == {} or currentsong == {}:
+                pass  # No status or song info available
+            else:
+                current_track = f"{currentsong['title']} - {currentsong['artist']}, {currentsong['album']}"
+                if current_track != last_track:
+                    client.get_art(args.cache_dir, args.size)
+                    display.update_album_art(args.cache_dir / "current.jpg")
+                    last_track = current_track
 
-            display.update_overlay(
-                shuffle=status['random'] == '1',
-                repeat=status['repeat'] == '1',
-                state=status['state'],
-                volume=int(status['volume']),
-                progress=float(status['elapsed']) / float(currentsong['time']),
-                title=currentsong['title'],
-                album=currentsong['album'],
-                artist=currentsong['artist']
-            )
+                display.update_overlay(
+                    shuffle=status['random'] == '1',
+                    repeat=status['repeat'] == '1',
+                    state=status['state'],
+                    volume=int(status['volume']),
+                    progress=float(status['elapsed']) / float(currentsong['time']),
+                    title=currentsong['title'],
+                    album=currentsong['album'],
+                    artist=currentsong['artist']
+                )
 
-            last_update = time.time()
+                last_update = time.time()
 
         display.redraw()
 
