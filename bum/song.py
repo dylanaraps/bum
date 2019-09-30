@@ -43,7 +43,8 @@ class ClientMPD():
         song = self.currentsong()
         if len(song) < 2:
             print("album: Nothing currently playing.")
-            util.bytes_to_file(util.default_cover_art, cache_dir / "current.jpg")
+            util.bytes_to_file(util.default_album_art, cache_dir / "current.jpg")
+            return
 
         file_name = f"{song['artist']}_{song['album']}_{size}.jpg".replace("/", "")
         file_name = cache_dir / file_name
@@ -59,7 +60,7 @@ class ClientMPD():
             album_art = brainz.get_cover(song, size)
 
             if not album_art:
-                album_art = util.default_cover_art()
+                album_art = util.default_album_art()
 
             util.bytes_to_file(album_art, cache_dir / file_name)
             util.bytes_to_file(album_art, cache_dir / "current.jpg")
