@@ -1,6 +1,8 @@
 """
 Display Output Classes.
 """
+import time
+import math
 
 
 class Display():
@@ -49,13 +51,23 @@ class DisplayPIL(Display):
         self._draw = ImageDraw.Draw(self._overlay, 'RGBA')
         self._draw.fontmode = '1'
         self._output_image = None
+        self._last_change = time.time()
 
     def update_album_art(self, input_file):
         Display.update_album_art(self, input_file)
         new = Image.open(input_file).resize((self._size - 10, self._size - 10))
         self._image.paste(new, (5, 5))
+        self._last_change = time.time()
 
     def redraw(self):
+        scroll_offset = 0
+        if time.time() - self._last_change > 1:
+            t = time.time() - self._last_change - 1
+            scroll_offset = math.sin(t)
+            scroll_offset = min(0.75, scroll_offset)
+            scroll_offset = max(-0.75, scroll_offset)
+            scroll_offset *= 1.333
+
         # Clear overlay
         self._draw.rectangle((0, 0, self._size, self._size), (0, 0, 0, 0))
 
@@ -66,15 +78,30 @@ class DisplayPIL(Display):
 
         # Song Title
         text_w, text_h = self._font.getsize(self._title)
-        self._draw.text(((self._size / 2) - (text_w / 2), (self._size-80) + 10), self._title, font=self._font)
+        text_offset_left = 0
+        if text_w > self._size:
+            text_offset_left = scroll_offset * ((text_w - self._size) / 2.0)
+            text_offset_left += scroll_offset * 10.0
+
+        self._draw.text(((self._size / 2) - (text_w / 2) + text_offset_left, (self._size - 80) + 10), self._title, font=self._font)
 
         # Album
         text_w, text_h = self._font.getsize(self._album)
-        self._draw.text(((self._size / 2) - (text_w / 2), (self._size-80) + 30), self._album, font=self._font)
+        text_offset_left = 0
+        if text_w > self._size:
+            text_offset_left = scroll_offset * ((text_w - self._size) / 2.0)
+            text_offset_left += scroll_offset * 10.0
+
+        self._draw.text(((self._size / 2) - (text_w / 2) + text_offset_left, (self._size - 80) + 30), self._album, font=self._font)
 
         # Artist
         text_w, text_h = self._font.getsize(self._artist)
-        self._draw.text(((self._size / 2) - (text_w / 2), (self._size-80) + 50), self._artist, font=self._font)
+        text_offset_left = 0
+        if text_w > self._size:
+            text_offset_left = scroll_offset * ((text_w - self._size) / 2.0)
+            text_offset_left += scroll_offset * 10.0
+
+        self._draw.text(((self._size / 2) - (text_w / 2) + text_offset_left, (self._size - 80) + 50), self._artist, font=self._font)
 
         self._output_image = Image.alpha_composite(self._image, self._overlay)
 
@@ -92,7 +119,7 @@ class DisplayST7789(DisplayPIL):
             cs=BG_SPI_CS_FRONT,
             dc=9,
             backlight=19,
-            spi_speed_hz=40 * 1000 * 1000
+            spi_speed_hz=80 * 1000 * 1000
         )
         self._st7789.begin()
 
