@@ -38,7 +38,7 @@ def get_args():
 
     arg.add_argument("--update-interval", metavar="\"i\"",
                      help="overlay update interval in seconds.",
-                     default=2)
+                     default=1)
 
     arg.add_argument("--size", metavar="\"px\"",
                      help="what size to display the album art in.",
