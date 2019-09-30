@@ -46,7 +46,8 @@ def get_args():
 
     arg.add_argument("--cache_dir", metavar="\"/path/to/dir\"",
                      help="Where to store the downloaded cover art.",
-                     default=pathlib.Path.home() / ".cache/bum")
+                     default=pathlib.Path.home() / ".cache/bum",
+                     type=pathlib.Path)
 
     arg.add_argument("--version", action="store_true",
                      help="Print \"bum\" version.")
