@@ -11,19 +11,14 @@ import argparse
 import pathlib
 import time
 import sys
-from pkg_resources import iter_entry_points
 
-from . import display
-from . import client
+from .display import get_display_types
+from .client import get_client_types
 
 from .__init__ import __version__
 
 
-display_types = display.get_display_types()
-client_types = client.get_client_types()
-
-
-def get_args():
+def get_args(display_types, client_types):
     """Get the script arguments."""
     description = "bum - Download and display album art \
                    for mpd tracks."
@@ -78,7 +73,7 @@ def get_args():
     except ValueError:
         pass
 
-    args, remaining = arg.parse_known_args()
+    args, _ = arg.parse_known_args()
 
     # Add display/client specific args into the parser
     display_types[args.display].add_args(arg)
@@ -101,8 +96,10 @@ def process_args(args):
 
 def main():
     """Main script function."""
-    display = None
-    args = get_args()
+    display_types = get_display_types()
+    client_types = get_client_types()
+
+    args = get_args(display_types, client_types)
     process_args(args)
 
     if args.no_display:

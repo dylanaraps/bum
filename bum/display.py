@@ -59,12 +59,12 @@ class Display():
 class DisplayPIL(Display):
     """Base class for PIL-based image displays."""
     def __init__(self, args=None):
-        global Image, ImageDraw, ImageFont, ConnectionIII
+        global Image, ImageDraw, ImageFilter, ImageFont, ConnectionIII
 
         Display.__init__(self, args)
 
         from fonts.otf import ConnectionIII
-        from PIL import ImageTk, Image, ImageDraw, ImageFont
+        from PIL import ImageTk, Image, ImageDraw, ImageFilter, ImageFont
         
         self._font = ImageFont.truetype(ConnectionIII, 20)
         self._image = Image.new('RGBA', (self._size, self._size), (0, 0, 0))
@@ -73,10 +73,13 @@ class DisplayPIL(Display):
         self._draw.fontmode = '1'
         self._output_image = None
         self._last_change = time.time()
+        self._blur = args.blur_album_art
 
     def update_album_art(self, input_file):
         Display.update_album_art(self, input_file)
         new = Image.open(input_file).resize((self._size - 10, self._size - 10))
+        if self._blur > 0:
+            new = new.convert('RGBA').filter(ImageFilter.GaussianBlur(radius=self._blur))
         self._image.paste(new, (5, 5))
         self._last_change = time.time()
 
@@ -125,6 +128,13 @@ class DisplayPIL(Display):
         self._draw.text(((self._size / 2) - (text_w / 2) + text_offset_left, (self._size - 80) + 50), self._artist, font=self._font)
 
         self._output_image = Image.alpha_composite(self._image, self._overlay)
+
+    def add_args(argparse):
+        Display.add_args(argparse)
+
+        argparse.add_argument("--blur-album-art",
+                              help="Apply blur effect to album art.",
+                              type=int)
 
 
 class DisplayDummy(Display):
