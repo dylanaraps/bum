@@ -3,6 +3,23 @@ Display Output Classes.
 """
 import time
 import math
+from pkg_resources import iter_entry_points
+
+
+def get_display_types():
+    display_types = {
+        'dummy': DisplayDummy,
+        'mpv': DisplayMPV,
+    }
+
+    for ep in iter_entry_points("bum_plugin_display"):
+        try:
+            plugin = ep.load()
+            display_types[plugin.option_name] = plugin
+        except (ModuleNotFoundError, ImportError) as e:
+            print(f"Error loading display plugin {ep}: {e}")
+
+    return display_types
 
 
 class Display():
@@ -40,6 +57,7 @@ class Display():
 
 
 class DisplayPIL(Display):
+    """Base class for PIL-based image displays."""
     def __init__(self, args=None):
         global Image, ImageDraw, ImageFont, ConnectionIII
 
@@ -113,47 +131,6 @@ class DisplayDummy(Display):
     pass
 
 
-class DisplayST7789(DisplayPIL):
-    def __init__(self, args):
-        from ST7789 import ST7789, BG_SPI_CS_FRONT
-        DisplayPIL.__init__(self, args)
-        self._st7789 = ST7789(
-            rotation=args.rotation,
-            port=args.spi_port,
-            cs=args.spi_chip_select_pin,
-            dc=args.spi_data_command_pin,
-            backlight=args.backlight_pin,
-            spi_speed_hz=args.spi_speed_mhz * 1000 * 1000
-        )
-        self._st7789.begin()
-
-    def redraw(self):
-        DisplayPIL.redraw(self)
-        self._st7789.display(self._output_image)
-
-    def add_args(argparse):
-        """Add supplemental arguments for ST7789."""
-        argparse.add_argument("--rotation",
-                              help="Rotation in degrees (Default: 90)",
-                              type=int, default=90, choices=[0, 90, 180, 270])
-        argparse.add_argument("--spi-port",
-                              help="SPI port (Default 0)",
-                              type=int, default=0, choices=[0,1])
-        argparse.add_argument("--spi-chip-select-pin",
-                              help="SPI chip select (Default 1)",
-                              type=int, default=1, choices=[0, 1])
-        argparse.add_argument("--spi-data-command-pin",
-                              help="SPI data/command pin (Default 9)",
-                              type=int, default=9)
-        argparse.add_argument("--spi-speed-mhz",
-                              help="SPI speed in Mhz (Default 80)",
-                              type=int, default=90)
-        argparse.add_argument("--backlight-pin",
-                              help="ST7789 backlight pin (Default 19)",
-                              type=int, default=19)
-
-
-
 class DisplayMPV(Display):
     def __init__(self, args):
         global mpv
@@ -171,28 +148,3 @@ class DisplayMPV(Display):
 
     def redraw(self):
         self._player.player(self._art)
-
-
-class DisplayTK(DisplayPIL):
-    def __init__(self, args):
-        global ImageTk, tkinter
-
-        DisplayPIL.__init__(self, args)
-
-        from PIL import ImageTk
-        import tkinter
-
-        self._root = tkinter.Tk()
-        self._root.geometry(f'{self._size}x{self._size}')
-        self._root.resizable(False, False)
-
-    def redraw(self):
-        DisplayPIL.redraw(self)
-
-        self._root.title(f"{self._title} - {self._artist}, {self._album}")
-
-        imagetk = ImageTk.PhotoImage(self._output_image)
-        label_image = tkinter.Label(self._root, image=imagetk)
-        label_image.place(x=0, y=0, width=self._size, height=self._size)
-
-        self._root.update()

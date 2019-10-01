@@ -4,9 +4,25 @@ Get song info.
 import shutil
 import mpd
 import select
+from pkg_resources import iter_entry_points
 
 from . import brainz
 from . import util
+
+
+def get_client_types():
+    client_types = {
+        'mpd': ClientMPD
+    }
+
+    for ep in iter_entry_points("bum_plugin_client"):
+        try:
+            plugin = ep.load()
+            client_types[plugin.option_name] = plugin
+        except (ModuleNotFoundError, ImportError) as e:
+            print(f"Error loading client plugin {ep}: {e}")
+
+    return client_types
 
 
 class ClientMPD():

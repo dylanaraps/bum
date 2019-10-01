@@ -11,23 +11,16 @@ import argparse
 import pathlib
 import time
 import sys
+from pkg_resources import iter_entry_points
 
 from . import display
-from . import song
+from . import client
 
 from .__init__ import __version__
 
 
-display_types = {
-    'dummy': display.DisplayDummy,
-    'tk': display.DisplayTK,
-    'mpv': display.DisplayMPV,
-    'st7789': display.DisplayST7789
-}
-
-client_types = {
-    'mpd': song.ClientMPD
-}
+display_types = display.get_display_types()
+client_types = client.get_client_types()
 
 
 def get_args():
