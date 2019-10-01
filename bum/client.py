@@ -65,7 +65,10 @@ class ClientMPD():
             util.bytes_to_file(util.default_album_art, cache_dir / "current.jpg")
             return
 
-        file_name = f"{song['artist']}_{song['album']}_{size}.jpg".replace("/", "")
+        artist = song.get('artist')
+        title = song.get('title')
+        album = song.get('album', title)
+        file_name = f"{artist}_{album}_{size}.jpg".replace("/", "")
         file_name = cache_dir / file_name
 
         if file_name.is_file():
@@ -84,4 +87,4 @@ class ClientMPD():
             util.bytes_to_file(album_art, cache_dir / file_name)
             util.bytes_to_file(album_art, cache_dir / "current.jpg")
 
-            print(f"album: Swapped art to {song['artist']}, {song['album']}.")
+            print(f"album: Swapped art to {artist}, {title}.")

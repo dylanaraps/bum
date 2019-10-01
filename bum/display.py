@@ -63,10 +63,11 @@ class DisplayPIL(Display):
 
         Display.__init__(self, args)
 
-        from fonts.otf import ConnectionIII
+        from fonts.otf import SourceSansPro as UserFont
         from PIL import ImageTk, Image, ImageDraw, ImageFilter, ImageFont
         
-        self._font = ImageFont.truetype(ConnectionIII, 20)
+        self._font = ImageFont.truetype(UserFont, 30)
+        self._font_small = ImageFont.truetype(UserFont, 22)
         self._image = Image.new('RGBA', (self._size, self._size), (0, 0, 0))
         self._overlay = Image.new('RGBA', (self._size, self._size))
         self._draw = ImageDraw.Draw(self._overlay, 'RGBA')
@@ -77,10 +78,10 @@ class DisplayPIL(Display):
 
     def update_album_art(self, input_file):
         Display.update_album_art(self, input_file)
-        new = Image.open(input_file).resize((self._size - 10, self._size - 10))
+        new = Image.open(input_file).resize((self._size, self._size))
         if self._blur > 0:
             new = new.convert('RGBA').filter(ImageFilter.GaussianBlur(radius=self._blur))
-        self._image.paste(new, (5, 5))
+        self._image.paste(new, (0, 0))
         self._last_change = time.time()
 
     def redraw(self):
@@ -93,12 +94,21 @@ class DisplayPIL(Display):
             scroll_offset *= 1.333
 
         # Clear overlay
-        self._draw.rectangle((0, 0, self._size, self._size), (0, 0, 0, 0))
+        self._draw.rectangle((0, 0, self._size, self._size), (20, 20, 40, 100))
 
-        bar_width = int(self._size * self._progress)
-        self._draw.rectangle((0, self._size - 90, bar_width, self._size - 80), (255, 0, 0, 200))
+        # Song Progress Bar
+        max_bar = self._size - 10
+        bar_width = int(max_bar * self._progress)
 
-        self._draw.rectangle((0, self._size - 80, self._size, self._size), (0, 0, 0, 200))
+        if self._blur < 10:
+            self._draw.rectangle((5, self._size - 10, self._size - 5, self._size - 5), (0, 0, 0, 150))
+        else:
+            self._draw.rectangle((5, self._size - 10, self._size - 5, self._size - 5), (255, 255, 255, 100))
+
+        self._draw.rectangle((5, self._size - 10, bar_width, self._size - 5), (255, 255, 255, 255))
+
+
+        # self._draw.rectangle((0, self._size - 80, self._size, self._size), (0, 0, 0, 200))
 
         # Song Title
         text_w, text_h = self._font.getsize(self._title)
@@ -107,25 +117,25 @@ class DisplayPIL(Display):
             text_offset_left = scroll_offset * ((text_w - self._size) / 2.0)
             text_offset_left += scroll_offset * 10.0
 
-        self._draw.text(((self._size / 2) - (text_w / 2) + text_offset_left, (self._size - 80) + 10), self._title, font=self._font)
+        self._draw.text(((self._size / 2) - (text_w / 2) + text_offset_left, 90), self._title, font=self._font)
 
         # Album
-        text_w, text_h = self._font.getsize(self._album)
+        text_w, text_h = self._font_small.getsize(self._album)
         text_offset_left = 0
         if text_w > self._size:
             text_offset_left = scroll_offset * ((text_w - self._size) / 2.0)
             text_offset_left += scroll_offset * 10.0
 
-        self._draw.text(((self._size / 2) - (text_w / 2) + text_offset_left, (self._size - 80) + 30), self._album, font=self._font)
+        self._draw.text(((self._size / 2) - (text_w / 2) + text_offset_left, 130), self._album, font=self._font_small)
 
         # Artist
-        text_w, text_h = self._font.getsize(self._artist)
+        text_w, text_h = self._font_small.getsize(self._artist)
         text_offset_left = 0
         if text_w > self._size:
             text_offset_left = scroll_offset * ((text_w - self._size) / 2.0)
             text_offset_left += scroll_offset * 10.0
 
-        self._draw.text(((self._size / 2) - (text_w / 2) + text_offset_left, (self._size - 80) + 50), self._artist, font=self._font)
+        self._draw.text(((self._size / 2) - (text_w / 2) + text_offset_left,  160), self._artist, font=self._font_small)
 
         self._output_image = Image.alpha_composite(self._image, self._overlay)
 

@@ -16,9 +16,12 @@ def init():
 
 def get_cover(song, size=250, retry_delay=5, retries=5):
     """Download the cover art."""
+    artist = song.get('artist')
+    title = song.get('title')
+    album = song.get('album', title)
     try:
-        data = mus.search_releases(artist=song["artist"],
-                                   release=song["album"],
+        data = mus.search_releases(artist=artist,
+                                   release=album,
                                    limit=1)
         release_id = data["release-list"][0]["release-group"]["id"]
         print(f"album: Using release-id: {data['release-list'][0]['id']}")
@@ -34,4 +37,4 @@ def get_cover(song, size=250, retry_delay=5, retries=5):
 
     except mus.ResponseError:
         print("error: Couldn't find album art for",
-              f"{song['artist']} - {song['album']}")
+              f"{artist} - {album}")

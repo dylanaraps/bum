@@ -121,7 +121,10 @@ def main():
             if status == {} or currentsong == {}:
                 pass  # No status or song info available
             else:
-                current_track = f"{currentsong['title']} - {currentsong['artist']}, {currentsong['album']}"
+                title = currentsong.get('title', 'Untitled')
+                artist = currentsong.get('artist', 'No Artist')
+                album = currentsong.get('album', title)
+                current_track = f"{title} - {artist}, {album}"
                 if current_track != last_track:
                     client.get_art(args.cache_dir, args.size)
                     display.update_album_art(args.cache_dir / "current.jpg")
@@ -133,9 +136,9 @@ def main():
                     state=status['state'],
                     volume=int(status['volume']),
                     progress=float(status['elapsed']) / float(currentsong['time']),
-                    title=currentsong['title'],
-                    album=currentsong['album'],
-                    artist=currentsong['artist']
+                    title=title,
+                    album=album,
+                    artist=artist
                 )
 
                 last_update = time.time()
