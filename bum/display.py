@@ -79,8 +79,8 @@ class DisplayPIL(Display):
     def update_album_art(self, input_file):
         Display.update_album_art(self, input_file)
         new = Image.open(input_file).resize((self._size, self._size))
-        if self._blur > 0:
-            new = new.convert('RGBA').filter(ImageFilter.GaussianBlur(radius=self._blur))
+        if self._blur:
+            new = new.convert('RGBA').filter(ImageFilter.GaussianBlur(radius=10))
         self._image.paste(new, (0, 0))
         self._last_change = time.time()
 
@@ -100,7 +100,7 @@ class DisplayPIL(Display):
         max_bar = self._size - 10
         bar_width = int(max_bar * self._progress)
 
-        if self._blur < 10:
+        if not self._blur:
             self._draw.rectangle((5, self._size - 10, self._size - 5, self._size - 5), (0, 0, 0, 150))
         else:
             self._draw.rectangle((5, self._size - 10, self._size - 5, self._size - 5), (255, 255, 255, 100))
@@ -144,7 +144,7 @@ class DisplayPIL(Display):
 
         argparse.add_argument("--blur-album-art",
                               help="Apply blur effect to album art.",
-                              type=int)
+                              action='store_true')
 
 
 class DisplayDummy(Display):
