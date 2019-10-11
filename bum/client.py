@@ -68,7 +68,7 @@ class ClientMPD():
         song = self.currentsong()
         if len(song) < 2:
             print("album: Nothing currently playing.")
-            util.bytes_to_file(util.default_album_art, cache_dir / "current.jpg")
+            util.bytes_to_file(util.default_album_art(), cache_dir / "current.jpg")
             return
 
         artist = song.get('artist')
