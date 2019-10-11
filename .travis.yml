@@ -7,5 +7,5 @@ install:
     - pip install flake8 pylint python-mpv python-mpd2 musicbrainzngs
 
 script:
-    - flake8 bum setup.py
+    - flake8 bum setup.py --ignore E501
     - pylint bum setup.py
