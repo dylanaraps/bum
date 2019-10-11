@@ -2,30 +2,33 @@
 Get song info.
 """
 import shutil
-import mpd
 import select
 from pkg_resources import iter_entry_points
+
+import mpd
 
 from . import brainz
 from . import util
 
 
 def get_client_types():
+    """Enumerate the bum_plugin_client entry point and return installed client types."""
     client_types = {
         'mpd': ClientMPD
     }
 
-    for ep in iter_entry_points("bum_plugin_client"):
+    for entry_point in iter_entry_points("bum_plugin_client"):
         try:
-            plugin = ep.load()
+            plugin = entry_point.load()
             client_types[plugin.option_name] = plugin
-        except (ModuleNotFoundError, ImportError) as e:
-            print(f"Error loading client plugin {ep}: {e}")
+        except (ModuleNotFoundError, ImportError) as err:
+            print(f"Error loading client plugin {entry_point}: {err}")
 
     return client_types
 
 
 class ClientMPD():
+    """Client for MPD and MPD-like (such as Mopidy) music back-ends."""
     def __init__(self, port=6600, server="localhost"):
         """Initialize mpd."""
         self._client = mpd.MPDClient()
@@ -38,23 +41,26 @@ class ClientMPD():
 
         self._client.send_idle('player')
 
-    def add_args(argparse):
-        pass
+    def add_args(argparse):  # pylint: disable=no-self-argument
+        """Expand argparse instance with client-specific args."""
 
     def currentsong(self):
+        """Return current song details."""
         self._client.noidle()
-        result = self._client.currentsong()
+        result = self._client.currentsong()  # pylint: disable=no-member
         self._client.send_idle('player')
         return result
 
     def status(self):
+        """Return current status details."""
         self._client.noidle()
-        result = self._client.status()
+        result = self._client.status()  # pylint: disable=no-member
         self._client.send_idle('player')
         return result
 
-    def update_pending(self, timeout=0):
-        result = select.select([self._client], [], [], 0.1)[0]
+    def update_pending(self, timeout=0.1):
+        """Determine if anything has changed on the server."""
+        result = select.select([self._client], [], [], timeout)[0]
         return self._client in result
 
     def get_art(self, cache_dir, size):

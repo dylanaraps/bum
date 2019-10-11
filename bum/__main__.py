@@ -115,7 +115,7 @@ def main():
     last_update = 0
 
     while True:
-        if client.update_pending() or time.time() - last_update > args.update_interval:
+        if client.update_pending() or time.time() - last_update > float(args.update_interval):
             status = client.status()
             currentsong = client.currentsong()
 
@@ -137,6 +137,7 @@ def main():
                     state=status['state'],
                     volume=int(status['volume']),
                     progress=float(status.get('elapsed', 0)) / float(currentsong['time']),
+                    elapsed=float(status.get('elapsed', 0)),
                     title=title,
                     album=album,
                     artist=artist

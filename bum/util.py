@@ -14,6 +14,7 @@ def bytes_to_file(input_data, output_file):
 
 
 def default_album_art():
+    """Return binary version of default album art."""
     return base64.b64decode("""
 iVBORw0KGgoAAAANSUhEUgAAAOYAAADmAQMAAAD7pGv4AAAABlBMVEX///8AAABVwtN+AAAChUlE
 QVRYw6XZsW0jMRCFYRoXTMYKWIRClsXQ4WXX1lVwNbAQB5YXgiBpZ77gRNiAtZS5/HfJmTePrb3R
@@ -29,4 +30,3 @@ nlh5uWpzxedq0ZWmq1RXuK6OWVm7KndFbzfAToJdCDsYdj/onNh1sWNjt8dOkV0mO1R2t+iM2VWz
 I2c3z06gXUQ7kIvJayvx2TW142q31k6vXWI7zIviZEvY2BW3o2433k6+TwF8grAoPreEq089fGLi
 0xaf1PiUxydEF/Re2hvtG6k8p7n4F+LQAAAAAElFTkSuQmCC
 """)
-
