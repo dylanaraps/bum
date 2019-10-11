@@ -26,7 +26,8 @@ def get_args(display_types, client_types):
 
     arg.add_argument("--update-interval", metavar="\"i\"",
                      help="overlay update interval in seconds.",
-                     default=1)
+                     default=1.0,
+                     type=float)
 
     arg.add_argument("--fps",
                      help="frames per second.",
@@ -135,7 +136,7 @@ def main():
                     repeat=status['repeat'] == '1',
                     state=status['state'],
                     volume=int(status['volume']),
-                    progress=float(status['elapsed']) / float(currentsong['time']),
+                    progress=float(status.get('elapsed', 0)) / float(currentsong['time']),
                     title=title,
                     album=album,
                     artist=artist
