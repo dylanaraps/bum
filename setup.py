@@ -27,6 +27,7 @@ setuptools.setup(
     author_email="phil@pimoroni.com",
     description="Download and display album art for mpd tracks.",
     long_description=LONG_DESC,
+    long_description_content_type="text/markdown",
     license="MIT",
     url="https://github.com/pimoroni/pidi",
     download_url=DOWNLOAD,
