@@ -1,11 +1,11 @@
-"""bum - setup.py"""
+"""pidi - setup.py"""
 import sys
 import setuptools
 
 try:
-    import bum
+    import pidi
 except (ImportError, SyntaxError):
-    print("error: bum requires Python 3.6 or greater.")
+    print("error: pidi requires Python 3.6 or greater.")
     sys.exit(1)
 
 
@@ -16,19 +16,19 @@ except(IOError, ImportError, RuntimeError):
     LONG_DESC = open('README.md').read()
 
 
-VERSION = bum.__version__
-DOWNLOAD = "https://github.com/dylanaraps/bum/archive/%s.tar.gz" % VERSION
+VERSION = pidi.__version__
+DOWNLOAD = "https://github.com/pimoroni/pidi/archive/%s.tar.gz" % VERSION
 
 
 setuptools.setup(
-    name="bum",
+    name="pidi",
     version=VERSION,
-    author="Dylan Araps",
-    author_email="dylan.araps@gmail.com",
+    author="Phil Howard",
+    author_email="phil@pimoroni.com",
     description="Download and display album art for mpd tracks.",
     long_description=LONG_DESC,
     license="MIT",
-    url="https://github.com/dylanaraps/bum",
+    url="https://github.com/pimoroni/pidi",
     download_url=DOWNLOAD,
     classifiers=[
         "Environment :: X11 Applications",
@@ -36,9 +36,9 @@ setuptools.setup(
         "Operating System :: POSIX :: Linux",
         "Programming Language :: Python :: 3.6",
     ],
-    packages=["bum"],
+    packages=["pidi"],
     entry_points={
-        "console_scripts": ["bum=bum.__main__:main"]
+        "console_scripts": ["pidi=pidi.__main__:main"]
     },
     install_requires=[
         "musicbrainzngs",

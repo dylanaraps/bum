@@ -5,24 +5,27 @@ from pkg_resources import iter_entry_points
 
 
 def get_display_types():
-    """Enumerate the bum_plugin_display entry point and return installed display types."""
+    """Enumerate the pidi.plugin.display entry point and return installed display types."""
     display_types = {
         'dummy': DisplayDummy,
         'mpv': DisplayMPV,
     }
 
-    for entry_point in iter_entry_points("bum_plugin_display"):
+    for entry_point in iter_entry_points("pidi.plugin.display"):
         try:
             plugin = entry_point.load()
             display_types[plugin.option_name] = plugin
         except (ModuleNotFoundError, ImportError) as err:
-            print(f"Error loading display plugin {entry_point}: {err}")
+            print("Error loading display plugin {entry_point}: {err}".format(
+                entry_point=entry_point,
+                err=err
+            ))
 
     return display_types
 
 
 class Display():
-    """Base class to represent a bum display output."""
+    """Base class to represent a pidi display output."""
     # pylint: disable=too-many-instance-attributes
     def __init__(self, args=None):
         """Initialise a new display."""
@@ -83,9 +86,9 @@ class DisplayMPV(Display):
         self._player = mpv.MPV(start_event_thread=False)
         self._player["force-window"] = "immediate"
         self._player["keep-open"] = "yes"
-        self._player["geometry"] = f"{self._size}x{self._size}"
-        self._player["autofit"] = f"{self._size}x{self._size}"
-        self._player["title"] = "bum"
+        self._player["geometry"] = "{size}x{size}".format(size=self._size)
+        self._player["autofit"] = "{size}x{size}".format(size=self._size)
+        self._player["title"] = "pidi"
         self._art = None
 
     def update_album_art(self, input_file):

@@ -20,9 +20,9 @@ from .__init__ import __version__
 
 def get_args(display_types, client_types):
     """Get the script arguments."""
-    description = "bum - Download and display album art \
+    description = "pidi - Download and display album art \
                    for mpd tracks."
-    arg = argparse.ArgumentParser("bum", description=description)
+    arg = argparse.ArgumentParser("pidi", description=description)
 
     arg.add_argument("--update-interval", metavar="\"i\"",
                      help="overlay update interval in seconds.",
@@ -39,11 +39,11 @@ def get_args(display_types, client_types):
 
     arg.add_argument("--cache_dir", metavar="\"/path/to/dir\"",
                      help="Where to store the downloaded cover art.",
-                     default=pathlib.Path.home() / ".cache/bum",
+                     default=pathlib.Path.home() / ".cache/pidi",
                      type=pathlib.Path)
 
     arg.add_argument("--version", action="store_true",
-                     help="Print \"bum\" version.")
+                     help="Print \"pidi\" version.")
 
     arg.add_argument("--port",
                      help="Use a custom mpd port.",
@@ -91,7 +91,7 @@ def get_args(display_types, client_types):
 def process_args(args):
     """Process the arguments."""
     if args.version:
-        print(f"bum {__version__}")
+        print("pidi {version}".format(version=__version__))
         sys.exit(0)
 
 
@@ -125,7 +125,7 @@ def main():
                 title = currentsong.get('title', 'Untitled')
                 artist = currentsong.get('artist', 'No Artist')
                 album = currentsong.get('album', title)
-                current_track = f"{title} - {artist}, {album}"
+                current_track = "{title} - {artist}, {album}".format(title=title, artist=artist, album=album)
                 if current_track != last_track:
                     client.get_art(args.cache_dir, args.size)
                     display.update_album_art(args.cache_dir / "current.jpg")

@@ -12,17 +12,20 @@ from . import util
 
 
 def get_client_types():
-    """Enumerate the bum_plugin_client entry point and return installed client types."""
+    """Enumerate the pidi.plugin.client entry point and return installed client types."""
     client_types = {
         'mpd': ClientMPD
     }
 
-    for entry_point in iter_entry_points("bum_plugin_client"):
+    for entry_point in iter_entry_points("pidi.plugin.client"):
         try:
             plugin = entry_point.load()
             client_types[plugin.option_name] = plugin
         except (ModuleNotFoundError, ImportError) as err:
-            print(f"Error loading client plugin {entry_point}: {err}")
+            print("Error loading client plugin {entry_point}: {err}".format(
+                entry_point=entry_point,
+                err=err
+            ))
 
     return client_types
 
@@ -74,7 +77,11 @@ class ClientMPD():
         artist = song.get('artist')
         title = song.get('title')
         album = song.get('album', title)
-        file_name = f"{artist}_{album}_{size}.jpg".replace("/", "")
+        file_name = "{artist}_{album}_{size}.jpg".format(
+            artist=artist,
+            album=album,
+            size=size
+        ).replace("/", "")
         file_name = cache_dir / file_name
 
         if file_name.is_file():
@@ -93,4 +100,7 @@ class ClientMPD():
             util.bytes_to_file(album_art, cache_dir / file_name)
             util.bytes_to_file(album_art, cache_dir / "current.jpg")
 
-            print(f"album: Swapped art to {artist}, {title}.")
+            print("album: Swapped art to {artist}, {title}.".format(
+                artist=artist,
+                title=title
+            ))
