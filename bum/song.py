@@ -22,12 +22,16 @@ def init(port=6600, server="localhost"):
         os._exit(1)  # pylint: disable=W0212
 
 
-def get_art(cache_dir, size, client):
+def get_art(cache_dir, size, default_cover, client):
     """Get the album art."""
     song = client.currentsong()
 
     if len(song) < 2:
         print("album: Nothing currently playing.")
+        if default_cover:
+            shutil.copy(default_cover, cache_dir / "current.jpg")
+            return
+
         util.bytes_to_file(util.default_album_art(), cache_dir / "current.jpg")
         return
 
@@ -44,10 +48,11 @@ def get_art(cache_dir, size, client):
         brainz.init()
         album_art = brainz.get_cover(song, size)
 
-        if not album_art:
+        if not album_art and default_cover:
+            shutil.copy(default_cover, cache_dir / "current.jpg")
+        elif not album_art and not default_cover:
             album_art = util.default_album_art()
-
-        util.bytes_to_file(album_art, cache_dir / file_name)
-        util.bytes_to_file(album_art, cache_dir / "current.jpg")
+            util.bytes_to_file(album_art, cache_dir / file_name)
+            util.bytes_to_file(album_art, cache_dir / "current.jpg")
 
         print(f"album: Swapped art to {song['artist']}, {song['album']}.")
