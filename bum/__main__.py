@@ -46,6 +46,8 @@ def get_args():
     arg.add_argument("--no_display",
                      action="store_true",
                      help="Only download album art, don't display.")
+    arg.add_argument("--default_cover",
+                     help="Use a custom image for the cover when artwork can't be found")
 
     return arg.parse_args()
 
@@ -68,7 +70,7 @@ def main():
     client = song.init(args.port, args.server)
 
     while True:
-        song.get_art(args.cache_dir, args.size, client)
+        song.get_art(args.cache_dir, args.size, args.default_cover, client)
         if not args.no_display:
             display.launch(disp, args.cache_dir / "current.jpg")
 
