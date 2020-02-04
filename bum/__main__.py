@@ -47,7 +47,7 @@ def get_args():
                      action="store_true",
                      help="Only download album art, don't display.")
     arg.add_argument("--default_cover",
-                     help="Use a custom image for the cover when artwork can't be found")
+                     help="Use a custom image for the default cover.")
 
     return arg.parse_args()
 
