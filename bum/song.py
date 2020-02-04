@@ -28,6 +28,10 @@ def get_art(cache_dir, size, default_cover, client):
 
     if len(song) < 2:
         print("album: Nothing currently playing.")
+        if default_cover:
+            shutil.copy(default_cover, cache_dir / "current.jpg")
+            return
+
         util.bytes_to_file(util.default_album_art(), cache_dir / "current.jpg")
         return
 
