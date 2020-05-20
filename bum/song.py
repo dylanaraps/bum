@@ -30,10 +30,10 @@ def get_art(cache_dir, size, default_cover, client):
         print("album: Nothing currently playing.")
         if default_cover:
             shutil.copy(default_cover, cache_dir / "current.jpg")
-            return
+            return False
 
         util.bytes_to_file(util.default_album_art(), cache_dir / "current.jpg")
-        return
+        return False
 
     file_name = f"{song['artist']}_{song['album']}_{size}.jpg".replace("/", "")
     file_name = cache_dir / file_name
@@ -41,6 +41,7 @@ def get_art(cache_dir, size, default_cover, client):
     if file_name.is_file():
         shutil.copy(file_name, cache_dir / "current.jpg")
         print("album: Found cached art.")
+        return True
 
     else:
         print("album: Downloading album art...")
@@ -56,3 +57,8 @@ def get_art(cache_dir, size, default_cover, client):
             util.bytes_to_file(album_art, cache_dir / "current.jpg")
 
         print(f"album: Swapped art to {song['artist']}, {song['album']}.")
+
+    if album_art:
+        return True
+    else:
+        return False
