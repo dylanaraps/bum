@@ -74,11 +74,9 @@ def main():
         if not args.no_display:
             display.launch(disp, args.cache_dir / "current.jpg")
 
-        client.send_idle()
+        client.idle("player")
 
-        if client.fetch_idle(["player"]):
-            print("album: Received player event from mpd. Swapping cover art.")
-            continue
+        print("album: Received player event from mpd. Swapping cover art.")
 
 
 if __name__ == "__main__":
